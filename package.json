@@ -1,0 +1,23 @@
+{
+  "name": "vasttrafiks-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/odde90/Vasttrafiks-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/odde90/Vasttrafiks-API/issues"
+  },
+  "homepage": "https://github.com/odde90/Vasttrafiks-API#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "express": "^4.17.1"
+  }
+}
