@@ -1,12 +1,10 @@
 
-
 const express = require('express')
 const app = express()
-
-
-var path = require('path');
+const path = require('path');
 const fs = require('fs');
-import schedule from 'node-schedule';
+const schedule = require('node-schedule');
+
 // Get all stations once every midnight
 schedule.scheduleJob('0 0 * * *', () => { 
 
@@ -18,13 +16,11 @@ function updatejson(locationFetch) {
     fs.writeFileSync('location.json', locations);
 }
 
+app.use(express.static('../public'));
 
-
-
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
-});
   app.listen(5000, function () {
     console.log('Node server is running..');
 });
+
+
 
