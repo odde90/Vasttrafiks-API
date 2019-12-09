@@ -8,7 +8,7 @@ const tokenUrl = 'https://api.vasttrafik.se/token';
 const authType = 'client_credentials';
 let token_expire;
 
-function auth() {
+export function auth() {
     // här ge ut en accestoken
     if (token_expire === undefined) {
         token_expire = moment.now();
@@ -35,5 +35,3 @@ function auth() {
         });
     }
 }
-
-auth();
