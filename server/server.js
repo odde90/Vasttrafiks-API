@@ -1,7 +1,9 @@
 
+
 const express = require('express')
 const app = express()
-const port = 6000
+
+
 var path = require('path');
 const fs = require('fs');
 import schedule from 'node-schedule';
@@ -25,3 +27,4 @@ app.get('/', function (req, res) {
   app.listen(5000, function () {
     console.log('Node server is running..');
 });
+
