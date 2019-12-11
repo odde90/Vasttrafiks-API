@@ -6,9 +6,10 @@ const apiKey = 'ImYwyH0R4fDOqLrsecEz15zu4bMa';
 const secretKey = 'RV8TO7qfYPWgEdSOMfL6_9bwAMQa';
 const tokenUrl = 'https://api.vasttrafik.se/token';
 const authType = 'client_credentials';
+let _authToken;
 let token_expire;
 
-export function auth() {
+async function updateToken() {
     // här ge ut en accestoken
     if (token_expire === undefined) {
         token_expire = moment.now();
@@ -22,16 +23,21 @@ export function auth() {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }
-        
         let body = `client_id=${apiKey}&client_secret=${secretKey}&grant_type=${authType}`;
-        
-        axios.post(tokenUrl, body, config)
-        .then((res) => {
+        // kör await här, kör await där borde vara enough
+        try {
+            let res = await axios.post(tokenUrl, body, config);
             let addedTime = moment(moment.now()).add(res.data.expires_in);
             token_expire = addedTime;
-            return res.data.access_token
-        }). catch ((err) => {
+            _authToken = res.data.access_token;
+            return _authToken;
+        } catch(err) {
             console.log(err.response.data);
-        });
+        }
     }
+}
+
+module.exports.getAuthToken = async () => {
+    await updateToken();
+    return _authToken;
 }
