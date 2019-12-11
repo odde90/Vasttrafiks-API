@@ -1,36 +1,70 @@
+
+var suggestions = []
+var stops = ["Vasaplatsen", "Valand", "Brunsparken", "Censtralstationen","Saxofonvägen"];
+$( document ).ready(function() {
+  //Hantering för inputFrån
+    $("#inputFrån").on("keyup", function() {
+        var input = document.getElementById('inputFrån');
+        var filter = input.value.toUpperCase();
+        var ul = document.getElementById("FromUl");
+        if( $("#inputFrån").val() != ''){
+            ul.style.display = 'block'
+        }else{
+            ul.style.display = 'none'
+        }
+        var bigletter = [];
+        stops.forEach(ext => {
+            bigletter.push(ext.toUpperCase())
+        });
+      printFrom(bigletter,filter);
+     
+    });
+    function printFrom(sugs,filter) {
+        ul1 = document.getElementById("FromUl");
+        ul1.innerText = '';
+        sugs.forEach(e => {
+            if (e.indexOf(filter) > -1) {
+            var  liItem = document.createElement('li');
+            var atag = document.createElement('a'); 
+             atag.innerText = e;
+            liItem.append(atag);
+            ul1.append(liItem) 
+        
+          } 
+        });
+    }
+});
+
+//Input hantering för inputTill
 $( document ).ready(function() {
     $("#inputTill").on("keyup", function() {
-        var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById('inputTill');
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("myUL");
-            li = ul.getElementsByTagName('li');
-
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-            } else {
-            li[i].style.display = "none";
-            }
+        var input = document.getElementById('inputTill');
+        var filter = input.value.toUpperCase();
+        var ul = document.getElementById("toUl");
+        if( $("#inputTill").val() != ''){
+            ul.style.display = 'block'
+        }else{
+            ul.style.display = 'none'
         }
-    
+        var bigletter = [];
+        stops.forEach(ext => {
+            bigletter.push(ext.toUpperCase())
+        });
+      printTo(bigletter,filter);
+     
     });
-    $("#inputFrån").on("keyup", function() {
-        var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById('inputFrån');
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("myUL2");
-            li = ul.getElementsByTagName('li');
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-            } else {
-            li[i].style.display = "none";
-            }
-        }
-    });
+    function printTo(sugs,filter) {
+        ul1 = document.getElementById("toUl");
+        ul1.innerText = '';
+        sugs.forEach(e => {
+            if (e.indexOf(filter) > -1) {
+            var  liItem = document.createElement('li');
+            var atag = document.createElement('a'); 
+             atag.innerText = e;
+            liItem.append(atag);
+            ul1.append(liItem) 
+        
+          } 
+        });
+    }
 });
