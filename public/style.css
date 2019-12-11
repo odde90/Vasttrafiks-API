@@ -113,12 +113,11 @@
         width: 14em;
     }
 
-    .g{
+    .hide{
         display: none;
     }
     .show{
         display: block;
-        color: red;
     }
     #myul {
         display: none;
@@ -126,3 +125,5 @@
     #FromUl{
         display: none;
     }
+
+    
