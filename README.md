@@ -10,7 +10,7 @@ Ni väljer själva om ni vill använda en utökad utvecklings-stack i projektet,
 För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. Inlämningen sker som vanligt via Zenit där lämnar in er projektmapp som en zip-fil. I projektmappen ska det finnas (utöver all kod) en README.md fil som innehåller en titel, beskrivning av uppgiften, vad som krävs för att bygga och starta projektet samt en länk till GitHub repot. Notera att om instruktioner för hur projektet byggs och startas inte finns eller om instruktionerna är felaktiga kommer uppgiften bli underkänd.
 
 
-### Prerequisites
+### Kraven för projektet
 
 What things you need to install the software and how to install them
 
