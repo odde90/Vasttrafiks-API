@@ -12,8 +12,6 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 
 ### Kraven för projektet
 
-What things you need to install the software and how to install them
-
 ```
 Krav för godkänt:
 
