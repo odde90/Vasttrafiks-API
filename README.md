@@ -52,5 +52,10 @@ node server.js
 
 ## Authors
 
-* **Test** 
+* **odde90** - *Initial work* - [odde90](https://github.com/odde90)
+* **Larsnihlmark** - *Initial work* - [Larsnihlmark](https://github.com/Larsnihlmark)
+* **Jesperjensensvard** - *Initial work* - [Jesperjensensvard](https://github.com/Jesperjensensvard)
+* **alcr33k** - *Initial work* - [alcr33k](https://github.com/https://github.com/alcr33k)
+
+
 
