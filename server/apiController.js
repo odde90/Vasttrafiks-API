@@ -27,16 +27,21 @@ module.exports = {
     // hitta id för arrival stop
     const depatureId = getStopIdByName(departureStop, token); 
     // skicka ett request till västtrafik API för att få en trip
-    let jDetailRef = await createTrip(originId, depatureId, token);
-    if (jDetailRef.statuscode !== 200) {
-      res.sendStatus(jDetailRef.statuscode);
-    }
-    // Nu få alla destinations genom att anropa journeyDetail
-    let stops = await getStops(jDetailRef.data, token);
-    if (stops.statuscode !== 200) {
-      res.sendStatus(stops.statuscode);
+    if (originId === null || depatureId === null) {
+      res.status(400).send('One of the stations was not a valid station');
     } else {
-      res.send(stops.data);
+      let jDetailRef = await createTrip(originId, depatureId, token);
+      if (jDetailRef.statuscode !== 200) {
+        res.sendStatus(jDetailRef.statuscode);
+      } else {
+        // Nu få alla destinations genom att anropa journeyDetail
+        let stops = await getStops(jDetailRef.data, token);
+        if (stops.statuscode !== 200) {
+          res.sendStatus(stops.statuscode);
+        } else {
+          res.send(stops.data);
+        }
+      }
     }
   }
 }
@@ -54,14 +59,16 @@ async function allStopsAxios(token) {
     allStops = jsonObj.LocationList.StopLocation;
     return allStops;
   } catch (err) {
-    console.log(err);
+    console.log('Error while getting all stops', err);
     return null;
   }
 }
 
 function getStopIdByName(name) {
-  console.log(name);
   let possibleStops = allStops.filter(stop => stop._attributes.name.indexOf(name) !== -1);
+  if (possibleStops.length <= 0) {
+    return null;
+  }
   let attributes = possibleStops.map(stop => stop._attributes);
   let weights = attributes.map(elem => elem.weight);
   // sort by weight
@@ -83,19 +90,12 @@ async function createTrip(originId, depatureId, token) {
     let res;
     let jsonData = convert.xml2json(response.data, {compact: true, spaces: 4});
     let jsonObj = JSON.parse(jsonData);
-    console.log(originId);
-    console.log(depatureId);
-    console.log('TRIPLIST LEN', jsonObj.TripList.Trip.length);
-    console.log(jsonObj.TripList.Trip);
     let legs = jsonObj.TripList.Trip[1].Leg;
-    // console.log('TRIP', trip);
     for (let i = 0; i < legs.length; i++) {
       if (legs[i].JourneyDetailRef !== undefined) {
-        console.log('THIS ONE', legs[i]);
         res = legs[i].JourneyDetailRef._attributes.ref;
         break;
       }
-      console.log('NOT THAT ONE', legs[i]);
     }
     // send data 
     if (res === '') {
@@ -119,7 +119,6 @@ async function createTrip(originId, depatureId, token) {
 }
 
 async function getStops(jDetailsRef, token) {
-  console.log(jDetailsRef)
   try { 
     let response = await axios.get(decodeURIComponent(jDetailsRef), {
       headers: {
@@ -129,14 +128,12 @@ async function getStops(jDetailsRef, token) {
     
     let jsonData = convert.xml2json(response.data, {compact: true, spaces: 4});
     let jsonObj = JSON.parse(jsonData);
-    console.log(jsonObj);
     return {
       data: jsonObj.JourneyDetail.Stop,
       statuscode: 200
     };
   } catch(err) {
-    console.log('Here');
-    console.log('ERRROR', err);
+    console.log('Getstops Error', err);
     return {
       data: '',
       statuscode: 500
