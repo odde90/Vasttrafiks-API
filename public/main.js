@@ -1,6 +1,8 @@
 
+
 var suggestions = []
 var stops = ["Vasaplatsen", "Valand", "Brunsparken", "Censtralstationen","Saxofonvägen"];
+
 $( document ).ready(function() {
   //Hantering för inputFrån
     $("#inputFrån").on("keyup", function() {
@@ -97,6 +99,50 @@ $( document ).ready(function() {
                 }
             });
         }
+        
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        })
+        $('#timepicker').timepicker({
+            uiLibrary: 'bootstrap4'
+        })
+        $('#secondDatepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        })
+        $('#secondTimepicker').timepicker({
+            uiLibrary: 'bootstrap4'
+        })
+        $(".button_submit").click(function(){
+            var inputFrom = $("#inputFrån").val();
+            var inputTo = $("#inputTill").val();
+            var datepicker = $("#datepicker").val();
+            var timepicker = $("#timepicker").val();
+            var secondDatepicker = $("#secondDatepicker").val();
+            var secondTimepicker = $("#secondTimepicker").val();
+
+            $('#container1').css({
+                "background" : "white",
+                "border" : "2px solid gray",
+                "border-radius" : "20px"
+            })
+            
+            $('#container2').css({
+                "background" : "white",
+                "border" : "2px solid gray",
+                "border-radius" : "20px"
+            })
+            $('#container3').css({
+                "background" : "white",
+                "border" : "2px solid gray",
+                "border-radius" : "20px"
+            })
+            
+            $("#container1").append('Du åker från: ',inputFrom,'<br>', 'Datumet:',datepicker,'<br>','Tid:',timepicker);
+            $("#container2").append('Du anländer: ',inputTo,'<br>','Datumet:',secondDatepicker,'<br>','Tid:',secondTimepicker)
+            $("#container3").append('Stationer i mellan')
+          });
+            
+        
 });
 
 
