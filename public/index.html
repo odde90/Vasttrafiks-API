@@ -10,12 +10,14 @@
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="main.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
   <title>Västtrafik</title>
 </head>
 
 <body>
   <img src="assets/vt-logo-negative.svg" width="180" height="40" id="VastLogo">
-<!--   <div class="navbar">
+  <!-- <div class="navbar">
     <a href="#home">Home</a>
     <a href="#news">News</a>
     <div class="dropdown">
@@ -31,12 +33,15 @@
   </div> -->
   <div class="form-group">
     <!-- Input nummer 1 Från -->
-    <h1>Vart vill du resa?</h1>
+    <h1 class="title">Vart vill du resa?</h1>
       <div class="input-group input-group-lg" id="firstInputField">
           <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-lg">Från</span>
           </div>
-          <input type="text" class="form-control" id="inputFrån" placeholder="Hållplats/adress/plats" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+          <input type="text" class="form-control" id="inputFrån" placeholder="Hållplats/adress/plats">
+         
+          <input id="datepicker" width="150" />
+          <input id="timepicker" width="150" />
           <ul class="dropdown-menu" id="FromUl">
             
           </ul>
@@ -48,16 +53,25 @@
             <span class="input-group-text" id="inputGroup-sizing-lg">Till</span>
           </div>
             <input type="text" class="form-control" id="inputTill" placeholder="Hållplats/adress/plats" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            <input id="secondDatepicker" width="150" />
+            <input id="secondTimepicker" width="150" />
             <ul class="dropdown-menu" id="toUl">
                 <li><a>dwdw</a></li>
-                <li><a>dwewedwe</a></li>
-                <li><a>d</a></li>
-                <li><a>b</a></li>
               </ul>
         </div>
     <div class="button_submit" align="center"><a class="submit" rel="nofollow noopener">Sök resa här</a></div>
   </div>
-
+  <div class="container">
+      <div class="row">
+          <div class="col" id="container1">
+          </div>
+          <div class="col" id="container2">
+          </div>
+      </div>      
+  </div>
+  <div class="container" id="station">
+    <div class="col" id="container3"></div>
+  </div>
 </body>
 
 </html>
