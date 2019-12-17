@@ -39,6 +39,16 @@ app.get('/api/allStops', async (req, res) => {
 
 app.use(express.static('../public'));
 
+app.get('/init', async function(req, res, next) {
+  let rawdata = fs.readFileSync('location.json');
+  let json = JSON.parse(rawdata);
+  res.json(json)
+})
+app.use(express.json({limit:'1mb'}));
+app.post('/clientRequestStops', function(req, res) {
+  console.log(req.body)
+})
+
   app.listen(5000, function () {
     console.log('Node server is running at port 5000..');
 });

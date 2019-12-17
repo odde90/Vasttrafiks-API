@@ -25,6 +25,83 @@ async function makeRequest() {
     }
 }
 
+async function getTrip() {
+    var inputFrom = document.getElementById('inputFrån').value;
+    var inputTo = document.getElementById('inputTill').value; 
+    var timeFrom = document.getElementById('timepicker').value;
+    var dateFrom = document.getElementById('datepicker').value;
+    //var timeTo = document.getElementById('secondDatepicker').value;
+    //var dateTo = document.getElementById('secondTimepicker').value;
+
+    if(inputFrom != '' && inputTo != ''){
+
+        if(timeFrom != '' && dateFrom != ''){
+            try{
+                console.log(true)
+                let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),timeFrom,dateFrom)
+            }catch(er){
+                console.error(er);
+            }
+        }else{       
+            try{
+            var today = new Date();
+            var date = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
+            var time = today.getHours() + ":" + today.getMinutes();
+            let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),time,date)
+            }catch(er){
+                console.error(er);
+            }
+        }
+    }
+}
+
+
+async function ClientsideFetch(station1,station2,time,date){
+    var realstation1 = [];
+    var realstation2 = [];
+    var station1Array = station1.split(", ");
+    var station2Array = station2.split(", ");
+
+    station1Array.forEach(parts => {
+        var sample = parts.charAt(0).toUpperCase() + parts.slice(1);
+        realstation1.push(sample);
+    });
+    station2Array.forEach(part => {
+        var sample2 = part.charAt(0).toUpperCase() + part.slice(1);
+        realstation2.push(sample2);
+    });
+
+    var finalstation1 = realstation1.join(', ');
+    var finalstation2 = realstation2.join(', ');
+
+    const paramsJureny = {
+        firstStation: finalstation1,
+        secondStation: finalstation2,
+        date,
+        time,
+    }
+
+    url = '/clientRequestStops'
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(paramsJureny),
+    }
+    
+    let res = await fetch(url, options)
+
+    if (res.status != 200) {
+        throw new Error(response.status + ' ' + response.statusText)
+    } else {
+        let jurney = await res.json();
+        console.log(jurney);
+    } 
+}
+
+
+
 
 $( document ).ready(function() {
   //Hantering för inputFrån
