@@ -138,12 +138,22 @@
         padding: 1em;
         margin: 1em;
     }
-    #container2{
+    .datetimePickerOptions{
+        padding: 20px;
         display: flex;
-        flex-direction: row;
-        padding: 1em;
-        margin: 1em;
-        
+        justify-content: center;
     }
+   .options-wrapper{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+   }
 
-    
+   #arivalvariblePicker{
+       border: 1px solid #ced4da;
+       border-radius: 5px;
+       color: #495057;
+       padding: 10px;
+   }
+   
+   

@@ -39,9 +39,6 @@
             <span class="input-group-text" id="inputGroup-sizing-lg">Från</span>
           </div>
           <input type="text" class="form-control" id="inputFrån" placeholder="Hållplats/adress/plats">
-         
-          <input id="datepicker" width="150" />
-          <input id="timepicker" width="150" />
           <ul class="dropdown-menu" id="FromUl">
             
           </ul>
@@ -53,12 +50,23 @@
             <span class="input-group-text" id="inputGroup-sizing-lg">Till</span>
           </div>
             <input type="text" class="form-control" id="inputTill" placeholder="Hållplats/adress/plats" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-            <input id="secondDatepicker" width="150" />
-            <input id="secondTimepicker" width="150" />
+           
             <ul class="dropdown-menu" id="toUl">
-                <li><a>dwdw</a></li>
-              </ul>
-        </div>
+            </ul>
+          </div>
+
+          <div class="options-wrapper">
+            <select id="arivalvariblePicker">
+              <option value="departure">Avgång</option>
+              <option value="arrival">Ankomst</option>
+            </select>
+          </div>
+
+          <div class="datetimePickerOptions">
+            <input id="datepicker" width="150" />
+            <input id="timepicker" width="150" />
+          </div>
+
     <div class="button_submit" align="center"><a onclick="getTrip()" class="submit" rel="nofollow noopener">Sök resa här</a></div>
   </div>
   <div class="container">

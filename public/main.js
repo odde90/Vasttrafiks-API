@@ -30,15 +30,16 @@ async function getTrip() {
     var inputTo = document.getElementById('inputTill').value; 
     var timeFrom = document.getElementById('timepicker').value;
     var dateFrom = document.getElementById('datepicker').value;
+    var arrivalPicker = document.getElementById('arivalvariblePicker').value;
     //var timeTo = document.getElementById('secondDatepicker').value;
     //var dateTo = document.getElementById('secondTimepicker').value;
-
+   
     if(inputFrom != '' && inputTo != ''){
 
         if(timeFrom != '' && dateFrom != ''){
             try{
                 console.log(true)
-                let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),timeFrom,dateFrom)
+                let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),timeFrom,dateFrom,arrivalPicker)
             }catch(er){
                 console.error(er);
             }
@@ -47,7 +48,7 @@ async function getTrip() {
             var today = new Date();
             var date = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
             var time = today.getHours() + ":" + today.getMinutes();
-            let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),time,date)
+            let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),time,date,arrivalPicker)
             }catch(er){
                 console.error(er);
             }
@@ -56,7 +57,7 @@ async function getTrip() {
 }
 
 
-async function ClientsideFetch(station1,station2,time,date){
+async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     var realstation1 = [];
     var realstation2 = [];
     var station1Array = station1.split(", ");
@@ -79,6 +80,7 @@ async function ClientsideFetch(station1,station2,time,date){
         secondStation: finalstation2,
         date,
         time,
+        arrivalOrdepature: arrivalPicker,
     }
 
     url = '/clientRequestStops'
