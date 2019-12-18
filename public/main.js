@@ -1,6 +1,5 @@
 var suggestions = []
 var stops = [];
-
 async function initLocation() {
     try {
         let response = await makeRequest();
@@ -82,28 +81,35 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
         time,
         arrivalOrdepature: arrivalPicker,
     }
-
-    url = '/clientRequestStops'
+    
+    // we want to send request to /getStations/:start/:stop
+    url = '/api/getStations/' + paramsJureny.firstStation  + '/' + paramsJureny.secondStation;
     const options = {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(paramsJureny),
+        }
     }
     
     let res = await fetch(url, options)
 
     if (res.status != 200) {
-        throw new Error(response.status + ' ' + response.statusText)
+        throw new Error(res.status + ' ' + res.statusText)
     } else {
         let jurney = await res.json();
-        console.log(jurney);
+        showData(jurney);
+        /* console.log(jurney); */
     } 
 }
 
-
-
+//hantering för getStations Array ge ut till front-end 
+function showData(jurney) {
+    $("#container3").empty();
+    $("#container3").append('<h2>Stationer i mellan</h2>'); 
+    for (let i = 0; i < jurney.length; i++) {
+        $("#container3").append('<p>' + jurney[i]._attributes.name + '</p>');
+    }
+}
 
 $( document ).ready(function() {
   //Hantering för inputFrån
@@ -259,7 +265,6 @@ $( document ).ready(function() {
                     var inputFrom = document.getElementById('inputTill');
                     inputFrom.value =  finsihsingalex[0]
                     
-
                 }
             });
         }
@@ -270,20 +275,15 @@ $( document ).ready(function() {
         $('#timepicker').timepicker({
             uiLibrary: 'bootstrap4'
         })
-        $('#secondDatepicker').datepicker({
-            uiLibrary: 'bootstrap4'
-        })
-        $('#secondTimepicker').timepicker({
-            uiLibrary: 'bootstrap4'
-        })
+
         $(".button_submit").click(function(){
+            
             var inputFrom = $("#inputFrån").val();
             var inputTo = $("#inputTill").val();
             var datepicker = $("#datepicker").val();
             var timepicker = $("#timepicker").val();
-            var secondDatepicker = $("#secondDatepicker").val();
-            var secondTimepicker = $("#secondTimepicker").val();
 
+            //style för divarna
             $('#container1').css({
                 "background" : "white",
                 "border" : "2px solid gray",
@@ -295,15 +295,16 @@ $( document ).ready(function() {
                 "border" : "2px solid gray",
                 "border-radius" : "20px"
             })
+            
             $('#container3').css({
                 "background" : "white",
                 "border" : "2px solid gray",
                 "border-radius" : "20px"
             })
-            
-            $("#container1").append('Du åker från: ',inputFrom,'<br>', 'Datumet:',datepicker,'<br>','Tid:',timepicker);
-            $("#container2").append('Du anländer: ',inputTo,'<br>','Datumet:',secondDatepicker,'<br>','Tid:',secondTimepicker)
-            $("#container3").append('Stationer i mellan')
+            $("#container1").empty();
+            $("#container2").empty();
+            $("#container1").append('Du åker från: ',inputFrom,'<br>', 'Datumet:',datepicker,'<br>','Tid:',timepicker); //Första div (åker ifrån)
+            $("#container2").append('Du anländer: ',inputTo,'<br>', 'Datumet:',datepicker,'<br>','Tid:',timepicker) // Andra div (Anländer)
           });
             
         
