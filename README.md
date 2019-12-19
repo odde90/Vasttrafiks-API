@@ -50,7 +50,7 @@ cd server
 node server.js
 
  ## Git Link
- [Github].(https://github.com/odde90/Vasttrafiks-API)
+ [Github](https://github.com/odde90/Vasttrafiks-API)
 
 ## Authors
 
