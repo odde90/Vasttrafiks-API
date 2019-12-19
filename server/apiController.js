@@ -16,8 +16,9 @@ module.exports = {
   },
   getStationBetweenStops: async function(req, res) {
     // skicka in namn på start och stopp
-    const arrivalStop = req.params.start;
-    const departureStop = req.params.stop;
+    let arrivalStop = req.params.start;
+    let departureStop = req.params.stop;
+    // hämta auth token för anrop mot västtrafiks api 
     let token = await auth.getAuthToken();
     if (allStops.length === 0) {
       allStops = await allStopsAxios(token);
@@ -36,10 +37,44 @@ module.exports = {
       } else {
         // Nu få alla destinations genom att anropa journeyDetail
         let stops = await getStops(jDetailRef.data, token);
-        if (stops.statuscode !== 200) {
-          res.sendStatus(stops.statuscode);
-        } else {
-          res.send(stops.data);
+        let stopsData = stops.data;
+        // only get the stops between the start and stop station
+        // start by checking for the ids in array
+        let startIndex = stopsData.findIndex(elem => elem._attributes.id === originId);
+        let endIndex = stopsData.findIndex(elem => elem._attributes.id === depatureId);
+        // still not found? search for full name in array
+        console.log(stopsData);
+        if (startIndex === -1) {
+          startIndex = stopsData.findIndex(elem => elem._attributes.name.indexOf(arrivalStop) !== -1);
+        }
+        if (endIndex === -1) {
+          endIndex = stopsData.findIndex(elem => elem._attributes.name.indexOf(departureStop) !== -1);
+        }
+        // Centralstationen heter ibland Göteborg Central, Göteborg och ibland Centralstationen, Göteborg i västtrafiks api ab någon anledning, fixa så det stämmer överens
+        if ((startIndex === -1) && (arrivalStop.toUpperCase().indexOf('CENTRALSTATIONEN') !== -1)) {
+          arrivalStop = 'Göteborg Central, Göteborg';
+          startIndex = stopsData.findIndex(elem => elem._attributes.name.indexOf(arrivalStop) !== -1);
+        }
+        if ((endIndex === -1) && (departureStop.toUpperCase().indexOf('CENTRALSTATIONEN') !== -1)) {
+          departureStop = 'Göteborg Central, Göteborg';
+          endIndex = stopsData.findIndex(elem => elem._attributes.name.indexOf(departureStop) !== -1);
+        }
+        // still not found? send error message, couldnt find id
+        if (startIndex === -1) {
+          res.status(404).send('Could not find arrival station in the result from JourneyDetail');
+        }
+        else if (endIndex === -1) {
+          res.status(404).send('Could not find departure station in the result from JourneyDetail');
+        } else { // all stations found, send data
+          let stopsRes = stopsData.slice(startIndex, endIndex+1);
+          console.log(originId);
+          console.log(depatureId);
+          // send stops
+          if (stops.statuscode !== 200) {
+            res.sendStatus(stops.statuscode);
+          } else {
+            res.send(stopsRes);
+          }
         }
       }
     }
