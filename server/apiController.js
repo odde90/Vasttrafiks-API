@@ -18,6 +18,9 @@ module.exports = {
     // skicka in namn på start och stopp
     let arrivalStop = req.params.start;
     let departureStop = req.params.stop;
+    let arrivalIsTrue = req.params.isArrival
+    let arrivalTime= req.params.time
+    let arrivalDate = req.params.date
     // hämta auth token för anrop mot västtrafiks api 
     let token = await auth.getAuthToken();
     if (allStops.length === 0) {
@@ -31,7 +34,7 @@ module.exports = {
     if (originId === null || depatureId === null) {
       res.status(400).send('One of the stations was not a valid station');
     } else {
-      let jDetailRef = await createTrip(originId, depatureId, token);
+      let jDetailRef = await createTrip(originId, depatureId, token, arrivalIsTrue, arrivalTime, arrivalDate);
       if (jDetailRef.statuscode !== 200) {
         res.sendStatus(jDetailRef.statuscode);
       } else {
@@ -114,14 +117,26 @@ function getStopIdByName(name) {
   return mostRelevant[0].id;
 }
 
-async function createTrip(originId, depatureId, token) {
+async function createTrip(originId, depatureId, token, arrivalIsTrue, arrivalTime, arrivalDate) {
+  console.log(arrivalIsTrue)
+ 
   try { 
-    let response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId, {
-      headers: {
-        'Authorization': 'Bearer  ' +  token,
-        'Format': 'JSON'
-      }
-    });
+    if(arrivalIsTrue == 'arrival'){
+
+      let response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+arrivalDate +'&time='+arrivalTime+'&searchForArrival=1' , {
+        headers: {
+          'Authorization': 'Bearer  ' +  token,
+          'Format': 'JSON'
+        }
+      });
+    }else{
+      let response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+ arrivalDate +'&time='+ arrivalTime , {
+        headers: {
+          'Authorization': 'Bearer  ' +  token,
+          'Format': 'JSON'
+        }
+      });
+    }
     let res;
     let jsonData = convert.xml2json(response.data, {compact: true, spaces: 4});
     let jsonObj = JSON.parse(jsonData);
