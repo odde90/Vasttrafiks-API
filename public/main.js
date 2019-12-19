@@ -8,7 +8,7 @@ async function initLocation() {
     }
 }
 
-initLocation();
+
 
 async function makeRequest() {     
     url = '/init';
@@ -17,7 +17,7 @@ async function makeRequest() {
         throw new Error(response.status + ' ' + response.statusText)
     } else {
         let dataStop = await res.json();
-       /// console.log(dataStop)
+     
         dataStop.forEach(stop => {
             stops.push(stop);
         });
@@ -30,22 +30,31 @@ async function getTrip() {
     var timeFrom = document.getElementById('timepicker').value;
     var dateFrom = document.getElementById('datepicker').value;
     var arrivalPicker = document.getElementById('arivalvariblePicker').value;
-    //var timeTo = document.getElementById('secondDatepicker').value;
-    //var dateTo = document.getElementById('secondTimepicker').value;
-   
+    
+    var timeFlip = dateFrom.split('/');
+    var rightTimeArray = [];
+
+    timeFlip.forEach(time => {
+        
+        rightTimeArray.push(time)
+    });
+
+
+    var completeDate = rightTimeArray[2] + '-' + rightTimeArray[0] +'-'+ rightTimeArray[1];
+
+        
     if(inputFrom != '' && inputTo != ''){
 
         if(timeFrom != '' && dateFrom != ''){
             try{
-                console.log(true)
-                let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),timeFrom,dateFrom,arrivalPicker)
+                let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),timeFrom,completeDate,arrivalPicker)
             }catch(er){
                 console.error(er);
             }
         }else{       
             try{
             var today = new Date();
-            var date = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             var time = today.getHours() + ":" + today.getMinutes();
             let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),time,date,arrivalPicker)
             }catch(er){
@@ -83,7 +92,7 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     }
     
     // we want to send request to /getStations/:start/:stop
-    url = '/api/getStations/' + paramsJureny.firstStation  + '/' + paramsJureny.secondStation;
+    url = '/api/getStations/' + paramsJureny.firstStation  + '/' + paramsJureny.secondStation + '/' + paramsJureny.date + '/' + paramsJureny.time + '/' + paramsJureny.arrivalOrdepature + '/';
     const options = {
         method: 'GET',
         headers: {
@@ -98,7 +107,6 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     } else {
         let jurney = await res.json();
         showData(jurney);
-        /* console.log(jurney); */
     } 
 }
 
@@ -107,11 +115,12 @@ function showData(jurney) {
     $("#container3").empty();
     $("#container3").append('<h2>Stationer i mellan</h2>'); 
     for (let i = 0; i < jurney.length; i++) {
-        $("#container3").append('<p>' + jurney[i]._attributes.name + '</p>');
+        $("#container3").append('<p>'+ "<b>Station: </b> " + jurney[i]._attributes.name + "<br>" + "<b>Datumet: </b>" + jurney[i]._attributes.arrDate + "<br>" + "<b>Tid:</b> " + jurney[i]._attributes.arrTime +'</p>');
     }
 }
 
 $( document ).ready(function() {
+   
   //Hantering för inputFrån
     $("#inputFrån").on("keyup", function() {
         var input = document.getElementById('inputFrån');
@@ -207,7 +216,7 @@ $( document ).ready(function() {
                     }
                 });
     
-                $(document).on("click","#FromUl",function() {
+                $(document).on("click","#toUl",function() {
                     ul.style.display = 'none'
                 });
             }
@@ -273,8 +282,11 @@ $( document ).ready(function() {
             uiLibrary: 'bootstrap4'
         })
         $('#timepicker').timepicker({
-            uiLibrary: 'bootstrap4'
+            uiLibrary: 'bootstrap4',
+            format: 'HH.MM'    
         })
+             
+
 
         $(".button_submit").click(function(){
             

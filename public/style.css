@@ -105,6 +105,9 @@
         text-align: center;
         color: lightcyan;
     }
+    h2{
+        text-align: center;
+    }
     #firstInputField{
         margin-bottom: 1em;
     }

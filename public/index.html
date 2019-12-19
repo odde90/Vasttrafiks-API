@@ -15,22 +15,9 @@
   <title>Västtrafik</title>
 </head>
 
-<body>
+<body onload="initLocation()">
   <img src="assets/vt-logo-negative.svg" width="180" height="40" id="VastLogo">
-  <!-- <div class="navbar">
-    <a href="#home">Home</a>
-    <a href="#news">News</a>
-    <div class="dropdown">
-      <button class="dropbtn">Dropdown
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-      </div>
-    </div>
-  </div> -->
+  
   <div class="form-group">
     <!-- Input nummer 1 Från -->
     <h1 class="title">Vart vill du resa?</h1>
@@ -64,7 +51,7 @@
 
           <div class="datetimePickerOptions">
             <input id="datepicker" width="150" />
-            <input id="timepicker" width="150" />
+            <input  id="timepicker" width="150" />
           </div>
 
     <div class="button_submit" align="center"><a onclick="getTrip()" class="submit" rel="nofollow noopener">Sök resa här</a></div>
