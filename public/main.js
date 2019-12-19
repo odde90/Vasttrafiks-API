@@ -103,6 +103,8 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     let res = await fetch(url, options)
 
     if (res.status != 200) {
+        $("#container3").empty();
+        $("#container3").append("Ett error inträffade vänligen testa igen med nya (datum, tid och färd)")
         throw new Error(res.status + ' ' + res.statusText)
     } else {
         let jurney = await res.json();
