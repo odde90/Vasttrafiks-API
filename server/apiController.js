@@ -118,25 +118,26 @@ function getStopIdByName(name) {
 }
 
 async function createTrip(originId, depatureId, token, arrivalIsTrue, arrivalTime, arrivalDate) {
-  console.log(arrivalIsTrue)
- 
-  try { 
-    if(arrivalIsTrue == 'arrival'){
+  let response;
 
-      let response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+arrivalDate +'&time='+arrivalTime+'&searchForArrival=1' , {
-        headers: {
-          'Authorization': 'Bearer  ' +  token,
-          'Format': 'JSON'
-        }
-      });
-    }else{
-      let response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+ arrivalDate +'&time='+ arrivalTime , {
-        headers: {
-          'Authorization': 'Bearer  ' +  token,
-          'Format': 'JSON'
-        }
-      });
-    }
+  if(arrivalIsTrue == 'arrival'){
+     response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+arrivalDate +'&time='+arrivalTime+'&searchForArrival=1' , {
+      headers: {
+        'Authorization': 'Bearer  ' +  token,
+        'Format': 'JSON'
+      }
+    });
+  }else{
+     response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+ arrivalDate +'&time='+ arrivalTime , {
+      headers: {
+        'Authorization': 'Bearer  ' +  token,
+        'Format': 'JSON'
+      }
+    });
+  }
+
+  try { 
+  
     let res;
     let jsonData = convert.xml2json(response.data, {compact: true, spaces: 4});
     let jsonObj = JSON.parse(jsonData);
@@ -188,5 +189,5 @@ async function getStops(jDetailsRef, token) {
       data: '',
       statuscode: 500
     }
-  }
+  } 
 }
