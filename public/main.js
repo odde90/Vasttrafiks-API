@@ -30,7 +30,7 @@ async function getTrip() {
     var timeFrom = document.getElementById('timepicker').value;
     var dateFrom = document.getElementById('datepicker').value;
     var arrivalPicker = document.getElementById('arivalvariblePicker').value;
-    
+    console.log(timeFrom)
     var timeFlip = dateFrom.split('/');
     var rightTimeArray = [];
 
