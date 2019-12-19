@@ -45,9 +45,9 @@ https://vuejs.org/
 
 ## Running the tests
 
-NPM install
-cd server
-node server.js
+NPM install<br>
+cd server<br>
+node server.js<br>
 
  ## Git Link
  [Github](https://github.com/odde90/Vasttrafiks-API)
