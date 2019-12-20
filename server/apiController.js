@@ -1,8 +1,10 @@
 const axios = require('axios');
 const auth = require('./auth');
 const convert = require('xml-js');
+
 // much better code structure nw with a router
 let allStops = [];
+
 
 module.exports = {
   getAllStops: async function getAllStops(req, res) {
@@ -10,9 +12,11 @@ module.exports = {
     let data = await allStopsAxios(token);
     if (data === null) {
       res.sendStatus(500);
-    } else {
-      res.send(data);
+    }else {
+      res.send(data)
+      return data
     }
+    
   },
   getStationBetweenStops: async function(req, res) {
     // skicka in namn på start och stopp
@@ -128,7 +132,7 @@ async function createTrip(originId, depatureId, token, arrivalIsTrue, arrivalTim
       }
     });
   }else{
-     response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId + '&date='+ arrivalDate +'&time='+ arrivalTime , {
+     response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId , {
       headers: {
         'Authorization': 'Bearer  ' +  token,
         'Format': 'JSON'

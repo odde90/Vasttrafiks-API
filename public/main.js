@@ -24,13 +24,13 @@ async function makeRequest() {
     }
 }
 
-async function getTrip() {
+ async function getTrip() {
     var inputFrom = document.getElementById('inputFrån').value;
     var inputTo = document.getElementById('inputTill').value; 
     var timeFrom = document.getElementById('timepicker').value;
     var dateFrom = document.getElementById('datepicker').value;
     var arrivalPicker = document.getElementById('arivalvariblePicker').value;
-    console.log(timeFrom)
+  
     var timeFlip = dateFrom.split('/');
     var rightTimeArray = [];
 
@@ -51,15 +51,6 @@ async function getTrip() {
             }catch(er){
                 console.error(er);
             }
-        }else{       
-            try{
-            var today = new Date();
-            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-            var time = today.getHours() + ":" + today.getMinutes();
-            let tripResponse = await ClientsideFetch(inputFrom.toLowerCase(),inputTo.toLowerCase(),time,date,arrivalPicker)
-            }catch(er){
-                console.error(er);
-            }
         }
     }
 }
@@ -68,8 +59,9 @@ async function getTrip() {
 async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     var realstation1 = [];
     var realstation2 = [];
-    var station1Array = station1.split(", ");
-    var station2Array = station2.split(", ");
+    var station1Array = station1.split(' ');
+    var station2Array = station2.split(' ');
+    
 
     station1Array.forEach(parts => {
         var sample = parts.charAt(0).toUpperCase() + parts.slice(1);
@@ -80,9 +72,9 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
         realstation2.push(sample2);
     });
 
-    var finalstation1 = realstation1.join(', ');
-    var finalstation2 = realstation2.join(', ');
-
+    var finalstation1 = realstation1.join(' ');
+    var finalstation2 = realstation2.join(' ');
+ 
     const paramsJureny = {
         firstStation: finalstation1,
         secondStation: finalstation2,
@@ -92,7 +84,7 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     }
     
     // we want to send request to /getStations/:start/:stop
-    url = '/api/getStations/' + paramsJureny.firstStation  + '/' + paramsJureny.secondStation + '/' + paramsJureny.date + '/' + paramsJureny.time + '/' + paramsJureny.arrivalOrdepature + '/';
+    url = '/api/getStations/' + paramsJureny.firstStation  + '/' + paramsJureny.secondStation + '/' + paramsJureny.date + '/' + paramsJureny.time + '/' + paramsJureny.arrivalOrdepature ;
     const options = {
         method: 'GET',
         headers: {
@@ -102,22 +94,41 @@ async function ClientsideFetch(station1,station2,time,date,arrivalPicker){
     
     let res = await fetch(url, options)
 
-    if (res.status != 200) {
-        $("#container3").empty();
-        $("#container3").append("Ett error inträffade vänligen testa igen med nya (datum, tid och färd)")
-        throw new Error(res.status + ' ' + res.statusText)
-    } else {
+if (res.status != 200) {
+   
+    $("#container3").empty();
+    $("#container3").append("Ett error inträffade vänligen testa igen med nya (datum, tid och färd)")
+    throw new Error(res.status + ' ' + res.statusText)
+} else {
+  
         let jurney = await res.json();
         showData(jurney);
+        printTripResult(jurney);
     } 
-}
+} 
 
 //hantering för getStations Array ge ut till front-end 
 function showData(jurney) {
     $("#container3").empty();
-    $("#container3").append('<h2>Stationer i mellan</h2>'); 
+    $("#container3").append('<h2>Stationer  emellan</h2>'); 
+
     for (let i = 0; i < jurney.length; i++) {
-        $("#container3").append('<p>'+ "<b>Station: </b> " + jurney[i]._attributes.name + "<br>" + "<b>Datumet: </b>" + jurney[i]._attributes.arrDate + "<br>" + "<b>Tid:</b> " + jurney[i]._attributes.arrTime +'</p>');
+        time = '';
+        date = '';
+        if(jurney[0]._attributes.arrTime == undefined){
+            time = jurney[0]._attributes.depTime
+        }else{
+            time = jurney[0]._attributes.arrTime
+        }
+
+        if(jurney[i]._attributes.arrDate == undefined){
+            date = jurney[i]._attributes.depDate
+        }else{
+            date = jurney[i]._attributes.arrDate
+        }
+
+
+        $("#container3").append('<p>'+ "<b>Station: </b> " + jurney[i]._attributes.name + "<br>" + "<b>Datumet: </b>" + date + "<br>" + "<b>Tid:</b> " + time +'</p>');
     }
 }
 
@@ -287,43 +298,59 @@ $( document ).ready(function() {
             uiLibrary: 'bootstrap4',
             format: 'HH.MM'    
         })
-             
-
-
-        $(".button_submit").click(function(){
-            
-            var inputFrom = $("#inputFrån").val();
-            var inputTo = $("#inputTill").val();
-            var datepicker = $("#datepicker").val();
-            var timepicker = $("#timepicker").val();
-
-            //style för divarna
-            $('#container1').css({
-                "background" : "white",
-                "border" : "2px solid gray",
-                "border-radius" : "20px"
-            })
-            
-            $('#container2').css({
-                "background" : "white",
-                "border" : "2px solid gray",
-                "border-radius" : "20px"
-            })
-            
-            $('#container3').css({
-                "background" : "white",
-                "border" : "2px solid gray",
-                "border-radius" : "20px"
-            })
-            $("#container1").empty();
-            $("#container2").empty();
-            $("#container1").append('Du åker från: ',inputFrom,'<br>', 'Datumet:',datepicker,'<br>','Tid:',timepicker); //Första div (åker ifrån)
-            $("#container2").append('Du anländer: ',inputTo,'<br>', 'Datumet:',datepicker,'<br>','Tid:',timepicker) // Andra div (Anländer)
-          });
-            
         
-});
+    });
+    
+    
 
+function printTripResult(jurney) {
+   
+   var inputFrom = $("#inputFrån").val();
+   var inputTo = $("#inputTill").val();
+   var datepicker = $("#datepicker").val();
+   var timepicker = $("#timepicker").val();
 
+   //style för divarna
+   $('#container1').css({
+       "background" : "white",
+       "border" : "2px solid gray",
+       "border-radius" : "20px"
+   })
+   
+   $('#container2').css({
+       "background" : "white",
+       "border" : "2px solid gray",
+       "border-radius" : "20px"
+   })
+   
+   $('#container3').css({
+       "background" : "white",
+       "border" : "2px solid gray",
+       "border-radius" : "20px"
+   })
+   var counter = 0;
+   jurney.forEach( function(i) {
+        counter++   
+    });
+    var time = '';
+   if(jurney[0]._attributes.arrTime == undefined ){
+        time = jurney[0]._attributes.depTime
+   }else{
+       time = jurney[0]._attributes.arrTime
+   }
+
+   timearrival = '';
+   if(jurney[counter - 1]._attributes.arrTime == undefined) {
+       timearrival = jurney[counter - 1]._attributes.depTime
+   }else{
+       timearrival = jurney[counter - 1]._attributes.arrTime
+   }
+
+$("#container1").empty();
+$("#container2").empty();
+$("#container1").append('Du åker från: ',inputFrom,'<br>', 'Datumet:',datepicker,'<br>','Tid:', time ); //Första div (åker ifrån)
+$("#container2").append('Du anländer: ',inputTo,'<br>', 'Datumet:',datepicker,'<br>','Tid:', timearrival,) // Andra div (Anländer)
+
+}
 
 

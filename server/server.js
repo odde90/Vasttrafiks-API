@@ -1,19 +1,21 @@
-const express = require('express')
+const express = require('express');
 const app = express()
 const path = require('path');
 const fs = require('fs');
 const schedule = require('node-schedule');
 const routes = require('./routes');
+const api = require('./apiController');
 
-// Get all stations once every midnight
-schedule.scheduleJob('0 0 * * *', () => { 
-
+schedule.scheduleJob('0 0 * * *', async () => {  
+  let json = await api.getAllStops();  
+  updatejson(json);
 });
+
 
 // function for writing all locations to location.json file
 function updatejson(locationFetch) {
-    let locations = JSON.stringify(locationFetch);
-    fs.writeFileSync('location.json', locations);
+  let locations = JSON.stringify(locationFetch);
+  fs.writeFileSync('location.json', locations);
 }
 
 app.use('/api', routes);
