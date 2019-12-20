@@ -115,10 +115,10 @@ function showData(jurney) {
     for (let i = 0; i < jurney.length; i++) {
         time = '';
         date = '';
-        if(jurney[0]._attributes.arrTime == undefined){
-            time = jurney[0]._attributes.depTime
+        if(jurney[i]._attributes.arrTime == undefined){
+            time = jurney[i]._attributes.depTime
         }else{
-            time = jurney[0]._attributes.arrTime
+            time = jurney[i]._attributes.arrTime
         }
 
         if(jurney[i]._attributes.arrDate == undefined){
