@@ -132,7 +132,7 @@ async function createTrip(originId, depatureId, token, arrivalIsTrue, arrivalTim
       }
     });
   }else{
-     response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId , {
+     response = await axios.get('https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=' + originId + '&destId=' + depatureId  + '&date='+arrivalDate +'&time='+arrivalTime , {
       headers: {
         'Authorization': 'Bearer  ' +  token,
         'Format': 'JSON'

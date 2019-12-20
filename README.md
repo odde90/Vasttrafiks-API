@@ -32,7 +32,12 @@ Uppdatering av access_token skall göras automatiskt då giltighetstiden för en
 - [ ] 5. Användaren skall kunna filtrera sin sökning på resetyp (buss, spårvagn, tåg, båt osv.)
 - [x] 6. Det skall finnas en automatisering så att alla hållplatser hämtas på nytt vid specifika tidpunkter (servern hämtar alla hållplatser och sparar dem i JSON-filen en gång om dagen).
 ```
+### Ops
 
+```
+Vi har inte gjort någon filtrering av fordon detta kan resultera att tiderna väljer första värdet och då kan tiderna vara varierande beroende på fordon
+
+```
 ### Installing
 
 ```
