@@ -15,7 +15,7 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 ```
 Krav för godkänt:
 
-- [x] :heavy_check_mark: 1. Ni skall använda er av Västtrafiks auth 2 autentisering.
+- [x] 1. Ni skall använda er av Västtrafiks auth 2 autentisering.
 Uppdatering av access_token skall göras automatiskt då giltighetstiden för en token gått ut (tips, använd er av en egen-skapad middleware).
 - [x] 2. Autentiseringen skall gå genom ett eget api i Node (för G-nivå räcker det att ha ett API/NodeJS server som levererar en access_token).
 - [x] 3. Samtliga hållplatser skall hämtas och sparas i en JSON-fil. Denna hämtning skall alltså inte ske varje gång man skall söka fram en resa.
@@ -27,10 +27,10 @@ Uppdatering av access_token skall göras automatiskt då giltighetstiden för en
 
 - [x] 1. Alla punkter för godkänt är uppfyllda
 - [x] 2. Alla anrop som görs till Västtrafiks API skall gå igenom en egen-skapad NodeJS server.
-3. Vid sökning av en resa skall de tre nästkommande resorna (som passar in på sökningen) visas. Samtliga av de visade resorna skall visa alla dess stop med tid för varje stop (när ex bussen anländer till varje hållplats i rutten).
-4. Eventuella förseningar skall visas upp för alla resor.
-5. Användaren skall kunna filtrera sin sökning på resetyp (buss, spårvagn, tåg, båt osv.)
-6. Det skall finnas en automatisering så att alla hållplatser hämtas på nytt vid specifika tidpunkter (servern hämtar alla hållplatser och sparar dem i JSON-filen en gång om dagen).
+- [ ] 3. Vid sökning av en resa skall de tre nästkommande resorna (som passar in på sökningen) visas. Samtliga av de visade resorna skall visa alla dess stop med tid för varje stop (när ex bussen anländer till varje hållplats i rutten).
+- [ ] 4. Eventuella förseningar skall visas upp för alla resor.
+- [ ] 5. Användaren skall kunna filtrera sin sökning på resetyp (buss, spårvagn, tåg, båt osv.)
+- [x] 6. Det skall finnas en automatisering så att alla hållplatser hämtas på nytt vid specifika tidpunkter (servern hämtar alla hållplatser och sparar dem i JSON-filen en gång om dagen).
 ```
 
 ### Installing
